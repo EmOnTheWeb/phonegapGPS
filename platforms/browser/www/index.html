@@ -32,6 +32,8 @@
         var route_data= []; 
         // navigator.geolocation.getCurrentPosition(onSuccess, onError);
         document.getElementById('go').onclick = function() {
+            console.log('hi'); 
+
             watch_id= navigator.geolocation.watchPosition(
 
                 //success
@@ -43,13 +45,13 @@
                 //error
                 function(error) {
                         console.log('couldnt get coordinates!!!'); 
-                }
+                },
                 //settings
                 { freqeuncy: 10000, enableHighAccuracy: true}); 
 
-            ); 
-
         }
+
+        
     }
 
     // onSuccess Geolocation
