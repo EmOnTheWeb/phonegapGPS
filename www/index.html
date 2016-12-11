@@ -17,6 +17,8 @@
     <title>Device Properties Example</title>
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script src="http://192.168.1.86:8080/target/target-script-min.js#anonymous"></script>
+
     <script type="text/javascript" charset="utf-8">
 
     // Wait for device API libraries to load
@@ -26,7 +28,28 @@
     // device APIs are available
     //
     function onDeviceReady() {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        var watch_id=null; 
+        var route_data= []; 
+        // navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        document.getElementById('go').onclick = function() {
+            watch_id= navigator.geolocation.watchPosition(
+
+                //success
+                function(position) {
+                        //check against route waypoints 
+                        console.log('position is'+position); 
+                        route_data.push(position); 
+                },
+                //error
+                function(error) {
+                        console.log('couldnt get coordinates!!!'); 
+                }
+                //settings
+                { freqeuncy: 10000, enableHighAccuracy: true}); 
+
+            ); 
+
+        }
     }
 
     // onSuccess Geolocation
@@ -37,7 +60,6 @@
                             'Longitude: '          + position.coords.longitude             + '<br />' +
                             'Altitude: '           + position.coords.altitude              + '<br />' +
                             'Accuracy: '           + position.coords.accuracy              + '<br />' +
-                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
                             'Heading: '            + position.coords.heading               + '<br />' +
                             'Speed: '              + position.coords.speed                 + '<br />' +
                             'Timestamp: '          + position.timestamp                    + '<br />';
@@ -53,6 +75,8 @@
     </script>
   </head>
   <body>
-    <p id="geolocation">Finding geolocation...</p>
+  <!--   <p id="geolocation">Finding geolocation...</p> -->
+    <h1>Navigate to the tube</h1>
+    <button id='go'>GO</button>
   </body>
-</html>er
+</html>
