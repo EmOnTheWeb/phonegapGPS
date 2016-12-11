@@ -51,6 +51,11 @@
 
         }
 
+        document.getElementById('stop').onclick = function() {
+            navigator.geolocation.clearWatch(watch_id); 
+            console.log('istopped'); 
+        }
+
         
     }
 
@@ -80,5 +85,6 @@
   <!--   <p id="geolocation">Finding geolocation...</p> -->
     <h1>Navigate to the tube</h1>
     <button id='go'>GO</button>
+    <button id='stop'>STOP</button>
   </body>
 </html>
