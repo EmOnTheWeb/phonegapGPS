@@ -18,19 +18,31 @@
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script src="http://192.168.1.86:8080/target/target-script-min.js#anonymous"></script>
-
     <script type="text/javascript" charset="utf-8">
 
     // Wait for device API libraries to load
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
+    // get xml out of file 
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            coordinate_array(xhr.responseText); 
+        }
+    }
+    xhr.open('GET', 'house_to_tube.gpx', true);
+    xhr.send(null);
+   
     // device APIs are available
     //
     function onDeviceReady() {
         var watch_id=null; 
-        var route_data= []; 
+        // var route_data= []; 
+       
         // navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        var route_waypoints = 
+
         document.getElementById('go').onclick = function() {
             console.log('hi'); 
 
@@ -39,8 +51,20 @@
                 //success
                 function(position) {
                         //check against route waypoints 
-                        console.log('position is'+position); 
-                        route_data.push(position); 
+                        var lat = position.coords.latitude; 
+                        var long = position.coords.longitude; 
+                        console.log('coordinates are'+ lat + long); 
+                        // route_data.push(position); 
+
+
+                        //everytime coordinates returned 
+                        //check against first coordinate in coordinate list from gpx file
+
+                        //if within 0.1 (assumes you're coming from the right direction!! play audio file) 
+
+
+
+
                 },
                 //error
                 function(error) {
