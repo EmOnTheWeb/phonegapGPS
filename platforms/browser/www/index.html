@@ -17,33 +17,30 @@
     <title>Device Properties Example</title>
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-    <script src="http://192.168.1.86:8080/target/target-script-min.js#anonymous"></script>
-
     <script type="text/javascript" charset="utf-8">
 
     // Wait for device API libraries to load
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
-    function coordinates_array(gpx_file) {
+    function getCoordinates(gpx_file) {
         console.log(gpx_file); 
     }
 
+    var coordinates_array = []; 
     // get xml out of file 
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             // coordinate_array(xhr.responseText); 
-            coordinates_array(xhr.responseText); 
+            coordinates_array = getCoordinates(xhr.responseText); 
         }
     }
     xhr.open('GET', 'house_to_tube.gpx', true);
     xhr.send(null);
 
-
     // device APIs are available
     //
-
     function onDeviceReady() {
 
         var watch_id=null; 
