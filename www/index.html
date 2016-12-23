@@ -25,12 +25,38 @@
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
+    function coordinates_array(gpx_file) {
+
+        console.log(gpx_file); 
+
+    }
+
+
     // device APIs are available
     //
+
     function onDeviceReady() {
+
+        // get xml out of file 
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                // coordinate_array(xhr.responseText); 
+                coordinates_array(xhr.responseText); 
+            }
+        }
+        xhr.open('GET', 'house_to_tube.gpx', true);
+        xhr.send(null);
+
+
+
         var watch_id=null; 
         var route_data= []; 
         // navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
+         document.getElementById('go').onclick = function() {
+        'hi'; 
+    }
         document.getElementById('go').onclick = function() {
             console.log('hi'); 
 
@@ -39,7 +65,8 @@
                 //success
                 function(position) {
                         //check against route waypoints 
-                        console.log('position is'+position); 
+                        var lat = position.coords.latitude; 
+                        var long = position.coords.longitude; 
                         route_data.push(position); 
                 },
                 //error
@@ -47,7 +74,7 @@
                         console.log('couldnt get coordinates!!!'); 
                 },
                 //settings
-                { freqeuncy: 10000, enableHighAccuracy: true}); 
+                { frequency: 10000, enableHighAccuracy: true}); 
 
         }
 
