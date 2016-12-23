@@ -26,10 +26,19 @@
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function coordinates_array(gpx_file) {
-
         console.log(gpx_file); 
-
     }
+
+    // get xml out of file 
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            // coordinate_array(xhr.responseText); 
+            coordinates_array(xhr.responseText); 
+        }
+    }
+    xhr.open('GET', 'house_to_tube.gpx', true);
+    xhr.send(null);
 
 
     // device APIs are available
@@ -37,28 +46,12 @@
 
     function onDeviceReady() {
 
-        // get xml out of file 
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                // coordinate_array(xhr.responseText); 
-                coordinates_array(xhr.responseText); 
-            }
-        }
-        xhr.open('GET', 'house_to_tube.gpx', true);
-        xhr.send(null);
-
-
-
         var watch_id=null; 
         var route_data= []; 
         // navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
-         document.getElementById('go').onclick = function() {
-        'hi'; 
-    }
+      
         document.getElementById('go').onclick = function() {
-            console.log('hi'); 
 
             watch_id= navigator.geolocation.watchPosition(
 
@@ -67,6 +60,8 @@
                         //check against route waypoints 
                         var lat = position.coords.latitude; 
                         var long = position.coords.longitude; 
+                        
+                        console.log('latitude is '+lat + ' longitude is '+ long)
                         route_data.push(position); 
                 },
                 //error
