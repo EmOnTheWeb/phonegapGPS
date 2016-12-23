@@ -19,15 +19,21 @@
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8">
 
+
     // Wait for device API libraries to load
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
+
     function getCoordinates(gpx_file) {
-        console.log(gpx_file); 
+      
+        // var rept = http://stackoverflow.com/questions/15829048/best-way-to-import-coordinates-from-gpx-file-and-display-using-google-maps-api
+        console.log(json_gpx); 
     }
 
     var coordinates_array = []; 
+
+
     // get xml out of file 
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -39,6 +45,7 @@
     xhr.open('GET', 'house_to_tube.gpx', true);
     xhr.send(null);
 
+
     // device APIs are available
     //
     function onDeviceReady() {
@@ -46,8 +53,6 @@
         var watch_id=null; 
         var route_data= []; 
         // navigator.geolocation.getCurrentPosition(onSuccess, onError);
-
-      
         document.getElementById('go').onclick = function() {
 
             watch_id= navigator.geolocation.watchPosition(
