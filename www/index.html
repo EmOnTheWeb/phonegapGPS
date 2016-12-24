@@ -1,17 +1,4 @@
-<!-- <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title>Blank App</title>
-    </head>
-    <body>
-        <script type="text/javascript" src="cordova.js"></script>
-    </body>
-</html>
- -->
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Device Properties Example</title>
@@ -34,7 +21,7 @@
     }
     xhr.open('GET', 'house_to_tube.gpx', true);
     xhr.send(null);
-
+    //read returned contents of file into an array of coordinates
     function getCoordinates(gpx_file) {
        
         //parse gpx string into xml so can iterate over
@@ -54,18 +41,23 @@
 
     function isClose(lat, long) {
 
-        // console.log('is it available' +coordinates_array); 
         for(var i=0; i<coordinates_array.length; i++) {
 
-                //if matches to 4 decimal places 
+            //if matches to 4 decimal places 
+            var waypoint_lat = coordinates_array[i][0]; 
+            var waypoint_long = coordinates_array[i][1]; 
 
+            // console.log('position lat long is' + lat + ' ' + long); 
+            // console.log('lat long waypoint is' +waypoint_lat + ' ' + waypoint_long); 
 
-               
-
-
-
+            if((lat.substr(0,lat.length -1) === waypoint_lat.substr(0,waypoint_lat.length-1)) && 
+                (long.substr(0, long.length -1) === waypoint_long.substr(0,waypoint_long.length-1))) {
+                
+                return i; 
             }
         }
+        return false; 
+    }
 
     // device APIs are available
     //
@@ -73,9 +65,7 @@
 
         var watch_id=null; 
         var route_data= []; 
-        //read returned contents of file into an array of coordinates
 
-        // navigator.geolocation.getCurrentPosition(onSuccess, onError);
         document.getElementById('go').onclick = function() {
             // console.log(coordinates_array); 
             watch_id= navigator.geolocation.watchPosition(
@@ -90,11 +80,13 @@
                     lat = lat.toFixed(5); 
                     long = long.toFixed(5); 
 
-                   // isClose(lat,long); //returns false if not close to anywhere, or waypoint number its closest to if close to a waypoint. 
+                   var waypoint = isClose(lat,long); //returns false if not close to anywhere, or waypoint number its closest to if close to a waypoint.
 
+                   if(waypoint) {
+                    //play corresponding audio 
+                   } 
                     // if(waypoint) {
                     route_data.push(position); 
-
                 },
                 //error
                 function(error) {
