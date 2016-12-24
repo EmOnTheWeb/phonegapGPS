@@ -26,9 +26,20 @@
 
 
     function getCoordinates(gpx_file) {
-      
-        // var rept = http://stackoverflow.com/questions/15829048/best-way-to-import-coordinates-from-gpx-file-and-display-using-google-maps-api
-        console.log(json_gpx); 
+       
+        //parse gpx string into xml so can iterate over
+        parser = new DOMParser(); 
+        xml = parser.parseFromString(gpx_file,'text/xml'); 
+        //get all rept tags to get lat/ long out of them 
+        var rtept = xml.querySelectorAll('rtept'); 
+
+        for(var i=0; i<rtept.length; i++) {
+
+            var lat = rtept[i].getAttribute('lat'); 
+            var long = rtept[i].getAttribute('lon'); 
+            
+            coordinates_array.push([lat, long]);
+        }
     }
 
     var coordinates_array = []; 
