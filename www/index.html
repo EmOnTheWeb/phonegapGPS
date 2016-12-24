@@ -47,16 +47,26 @@
             var waypoint_lat = coordinates_array[i][0]; 
             var waypoint_long = coordinates_array[i][1]; 
 
-            // console.log('position lat long is' + lat + ' ' + long); 
-            // console.log('lat long waypoint is' +waypoint_lat + ' ' + waypoint_long); 
+            console.log('position lat long is' + lat + ' ' + long); 
+            console.log('lat long waypoint is' +waypoint_lat + ' ' + waypoint_long); 
 
             if((lat.substr(0,lat.length -1) === waypoint_lat.substr(0,waypoint_lat.length-1)) && 
                 (long.substr(0, long.length -1) === waypoint_long.substr(0,waypoint_long.length-1))) {
-                
-                return i; 
+                console.log('i am here'); 
+                return i+1; 
             }
         }
+        console.log('i reached here instead'); 
         return false; 
+    }
+
+    function playAudio(id) {
+        
+        var audioElement = document.getElementById(id);
+        var url = audioElement.getAttribute('src');
+        var my_media = new Media(url);
+        // Play audio
+        my_media.play();
     }
 
     // device APIs are available
@@ -81,9 +91,10 @@
                     long = long.toFixed(5); 
 
                    var waypoint = isClose(lat,long); //returns false if not close to anywhere, or waypoint number its closest to if close to a waypoint.
-
-                   if(waypoint) {
+                   if(waypoint !== false) {
                     //play corresponding audio 
+                        audio_elem = 'waypoint_'+waypoint; 
+                        playAudio(audio_elem);  
                    } 
                     // if(waypoint) {
                     route_data.push(position); 
@@ -110,5 +121,14 @@
     <h1>Navigate to the tube</h1>
     <button id='go'>GO</button>
     <button id='stop'>STOP</button>
+
+    <audio type ='audio/mpeg' id='waypoint_1' src='audio.mp3'></audio>
+    <audio type ='audio/mpeg' id='waypoint_2' src='audio.mp3'></audio>
+    <audio type ='audio/mpeg' id='waypoint_3' src='audio.mp3'></audio>
+    <audio type ='audio/mpeg' id='waypoint_4' src='audio.mp3'></audio>
+    <audio type ='audio/mpeg' id='waypoint_5' src='audio.mp3'></audio>
+    <audio type ='audio/mpeg' id='waypoint_6' src='audio.mp3'></audio>
+    <audio type ='audio/mpeg' id='waypoint_7' src='audio.mp3'></audio>
+
   </body>
 </html>
