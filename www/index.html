@@ -19,50 +19,62 @@
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8">
 
-
     // Wait for device API libraries to load
     //
     document.addEventListener("deviceready", onDeviceReady, false);
-
-
-    function getCoordinates(gpx_file) {
-       
-        //parse gpx string into xml so can iterate over
-        parser = new DOMParser(); 
-        xml = parser.parseFromString(gpx_file,'text/xml'); 
-        //get all rept tags to get lat/ long out of them 
-        var rtept = xml.querySelectorAll('rtept'); 
-
-        for(var i=0; i<rtept.length; i++) {
-
-            var lat = rtept[i].getAttribute('lat'); 
-            var long = rtept[i].getAttribute('lon'); 
-            
-            coordinates_array.push([lat, long]);
-        }
-    }
-
-    var coordinates_array = []; 
-
-
-    // get xml out of file 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            // coordinate_array(xhr.responseText); 
-            coordinates_array = getCoordinates(xhr.responseText); 
-        }
-    }
-    xhr.open('GET', 'house_to_tube.gpx', true);
-    xhr.send(null);
-
 
     // device APIs are available
     //
     function onDeviceReady() {
 
+        //read returned contents of file into an array of coordinates
+        var coordinates_array = []; 
+
+        // get xml out of file 
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                // coordinate_array(xhr.responseText); 
+                coordinates_array = getCoordinates(xhr.responseText); 
+            }
+        }
+        xhr.open('GET', 'house_to_tube.gpx', true);
+        xhr.send(null);
+
+        function getCoordinates(gpx_file) {
+           
+            //parse gpx string into xml so can iterate over
+            parser = new DOMParser(); 
+            xml = parser.parseFromString(gpx_file,'text/xml'); 
+            //get all rept tags to get lat/ long out of them 
+            var rtept = xml.querySelectorAll('rtept'); 
+
+            for(var i=0; i<rtept.length; i++) {
+
+                var lat = rtept[i].getAttribute('lat'); 
+                var long = rtept[i].getAttribute('lon'); 
+                
+                coordinates_array.push([lat, long]);
+            } 
+        }
+
+        function isClose(lat, long) {
+         
+            for(var i=0; i<coordinates_array.length; i++) {
+
+            //if matches to 4 decimal places 
+
+
+
+
+
+
+            }
+        }
+
         var watch_id=null; 
         var route_data= []; 
+
         // navigator.geolocation.getCurrentPosition(onSuccess, onError);
         document.getElementById('go').onclick = function() {
 
@@ -73,8 +85,20 @@
                         //check against route waypoints 
                         var lat = position.coords.latitude; 
                         var long = position.coords.longitude; 
-                        
-                        console.log('latitude is '+lat + ' longitude is '+ long)
+
+                        //round numbers to 5 decimals 
+                        lat = lat.toFixed(5); 
+                        long = long.toFixed(5); 
+
+                        // var waypoint = isClose(lat,long); //returns false if not close to anywhere, or waypoint number its closest to if close to a waypoint. 
+
+                        // if(waypoint) {
+
+
+
+
+                        // }
+
                         route_data.push(position); 
                 },
                 //error
@@ -87,31 +111,10 @@
         }
 
         document.getElementById('stop').onclick = function() {
+            
             navigator.geolocation.clearWatch(watch_id); 
             console.log('istopped'); 
-        }
-
-        
-    }
-
-    // onSuccess Geolocation
-    //
-    function onSuccess(position) {
-        var element = document.getElementById('geolocation');
-        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
-                            'Longitude: '          + position.coords.longitude             + '<br />' +
-                            'Altitude: '           + position.coords.altitude              + '<br />' +
-                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
-                            'Heading: '            + position.coords.heading               + '<br />' +
-                            'Speed: '              + position.coords.speed                 + '<br />' +
-                            'Timestamp: '          + position.timestamp                    + '<br />';
-    }
-
-    // onError Callback receives a PositionError object
-    //
-    function onError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
+        }   
     }
 
     </script>
