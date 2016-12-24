@@ -23,83 +23,78 @@
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
+    var coordinates_array = []; 
+    //get xml out of file 
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            // coordinate_array(xhr.responseText); 
+            getCoordinates(xhr.responseText); 
+        }
+    }
+    xhr.open('GET', 'house_to_tube.gpx', true);
+    xhr.send(null);
+
+    function getCoordinates(gpx_file) {
+       
+        //parse gpx string into xml so can iterate over
+        parser = new DOMParser(); 
+        xml = parser.parseFromString(gpx_file,'text/xml'); 
+        //get all rept tags to get lat/ long out of them 
+        var rtept = xml.querySelectorAll('rtept'); 
+
+        for(var i=0; i<rtept.length; i++) {
+
+            var lat = rtept[i].getAttribute('lat'); 
+            var long = rtept[i].getAttribute('lon'); 
+            
+            coordinates_array.push([lat, long]);
+        } 
+    }
+
+    function isClose(lat, long) {
+
+        // console.log('is it available' +coordinates_array); 
+        for(var i=0; i<coordinates_array.length; i++) {
+
+                //if matches to 4 decimal places 
+
+
+               
+
+
+
+            }
+        }
+
     // device APIs are available
     //
-    function onDeviceReady() {
-
-        //read returned contents of file into an array of coordinates
-        var coordinates_array = []; 
-
-        // get xml out of file 
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                // coordinate_array(xhr.responseText); 
-                coordinates_array = getCoordinates(xhr.responseText); 
-            }
-        }
-        xhr.open('GET', 'house_to_tube.gpx', true);
-        xhr.send(null);
-
-        function getCoordinates(gpx_file) {
-           
-            //parse gpx string into xml so can iterate over
-            parser = new DOMParser(); 
-            xml = parser.parseFromString(gpx_file,'text/xml'); 
-            //get all rept tags to get lat/ long out of them 
-            var rtept = xml.querySelectorAll('rtept'); 
-
-            for(var i=0; i<rtept.length; i++) {
-
-                var lat = rtept[i].getAttribute('lat'); 
-                var long = rtept[i].getAttribute('lon'); 
-                
-                coordinates_array.push([lat, long]);
-            } 
-        }
-
-        function isClose(lat, long) {
-         
-            for(var i=0; i<coordinates_array.length; i++) {
-
-            //if matches to 4 decimal places 
-
-
-
-
-
-
-            }
-        }
+    function onDeviceReady() { 
 
         var watch_id=null; 
         var route_data= []; 
+        //read returned contents of file into an array of coordinates
 
         // navigator.geolocation.getCurrentPosition(onSuccess, onError);
         document.getElementById('go').onclick = function() {
-
+            // console.log(coordinates_array); 
             watch_id= navigator.geolocation.watchPosition(
 
                 //success
                 function(position) {
                         //check against route waypoints 
-                        var lat = position.coords.latitude; 
-                        var long = position.coords.longitude; 
+                    var lat = position.coords.latitude; 
+                    var long = position.coords.longitude; 
 
-                        //round numbers to 5 decimals 
-                        lat = lat.toFixed(5); 
-                        long = long.toFixed(5); 
+                    //round numbers to 5 decimals 
+                    lat = lat.toFixed(5); 
+                    long = long.toFixed(5); 
 
-                        // var waypoint = isClose(lat,long); //returns false if not close to anywhere, or waypoint number its closest to if close to a waypoint. 
+                   // isClose(lat,long); //returns false if not close to anywhere, or waypoint number its closest to if close to a waypoint. 
 
-                        // if(waypoint) {
+                    // if(waypoint) {
+                    route_data.push(position); 
 
-
-
-
-                        // }
-
-                        route_data.push(position); 
                 },
                 //error
                 function(error) {
@@ -107,7 +102,6 @@
                 },
                 //settings
                 { frequency: 10000, enableHighAccuracy: true}); 
-
         }
 
         document.getElementById('stop').onclick = function() {
