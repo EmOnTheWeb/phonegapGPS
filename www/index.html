@@ -10,6 +10,10 @@
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
+    var MapBoxClient = require('mapbox'); 
+    var client = new MapboxClient('pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg');
+    // "https://api.mapbox.com/directions/v5/mapbox/cycling/-122.42,37.78;-77.03,38.91?steps=true&alternatives=true&access_token=pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg"
+
     var coordinates_array = []; 
     //get xml out of file 
     var xhr = new XMLHttpRequest();
