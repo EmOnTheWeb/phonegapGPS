@@ -10,11 +10,7 @@
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
-    var MapBoxClient = require('mapbox'); 
-    var client = new MapboxClient('pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg');
-    // "https://api.mapbox.com/directions/v5/mapbox/cycling/-122.42,37.78;-77.03,38.91?steps=true&alternatives=true&access_token=pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg"
-
-    var coordinates_array = []; 
+  
     //get xml out of file 
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -27,20 +23,43 @@
     xhr.send(null);
     //read returned contents of file into an array of coordinates
     function getCoordinates(gpx_file) {
-       
+
+        var coordinates_array = [];  
         //parse gpx string into xml so can iterate over
         parser = new DOMParser(); 
         xml = parser.parseFromString(gpx_file,'text/xml'); 
         //get all rept tags to get lat/ long out of them 
         var rtept = xml.querySelectorAll('rtept'); 
 
-        for(var i=0; i<rtept.length; i++) {
+            for(var i=0; i<rtept.length; i++) {
 
-            var lat = rtept[i].getAttribute('lat'); 
-            var long = rtept[i].getAttribute('lon'); 
-            
-            coordinates_array.push([lat, long]);
-        } 
+                var lat = rtept[i].getAttribute('lat'); 
+                var long = rtept[i].getAttribute('lon'); 
+                
+                coordinates_array.push([lat, long]);
+            } 
+        getTurnByTurn(coordinates_array); 
+    }
+
+    function getTurnByTurn(coordinates_array) { //get turn by turn directions between coordinates/ waypoints 
+        console.log(coordinates_array); 
+    //      var MapBoxClient = require('mapbox'); 
+    // var client = new MapboxClient('pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg');
+        var request_string = ''; 
+        //create string for request 
+        for (var i=0; i<coordinates_array.length; i++) {
+            request_string += coordinates_array[i][0] + ',' + coordinates_array[i][1]; 
+
+            if(i != coordinates_array.length-1) {
+                request_string += ';'; 
+            }
+        }
+        console.log(request_string); 
+
+
+    // "https://api.mapbox.com/directions/v5/mapbox/walking/-122.42,37.78;-77.03,38.91?steps=true&alternatives=true&access_token=pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg"
+        
+
     }
 
     function isClose(lat, long) {
@@ -51,16 +70,15 @@
             var waypoint_lat = coordinates_array[i][0]; 
             var waypoint_long = coordinates_array[i][1]; 
 
-            console.log('position lat long is' + lat + ' ' + long); 
-            console.log('lat long waypoint is' +waypoint_lat + ' ' + waypoint_long); 
+            // console.log('position lat long is' + lat + ' ' + long); 
+            // console.log('lat long waypoint is' +waypoint_lat + ' ' + waypoint_long); 
 
             if((lat.substr(0,lat.length -1) === waypoint_lat.substr(0,waypoint_lat.length-1)) && 
                 (long.substr(0, long.length -1) === waypoint_long.substr(0,waypoint_long.length-1))) {
-                console.log('i am here'); 
+          
                 return i+1; 
             }
         }
-        console.log('i reached here instead'); 
         return false; 
     }
 
