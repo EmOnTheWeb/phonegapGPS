@@ -2,9 +2,10 @@
 <html>
   <head>
     <title>Device Properties Example</title>
-
+    <script src="js/bundle.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8">
+
 
     // Wait for device API libraries to load
     //
@@ -42,19 +43,29 @@
     }
 
     function getTurnByTurn(coordinates_array) { //get turn by turn directions between coordinates/ waypoints 
-        console.log(coordinates_array); 
-    //      var MapBoxClient = require('mapbox'); 
-    // var client = new MapboxClient('pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg');
-        var request_string = ''; 
-        //create string for request 
-        for (var i=0; i<coordinates_array.length; i++) {
-            request_string += coordinates_array[i][0] + ',' + coordinates_array[i][1]; 
+    //     console.log(coordinates_array); 
+    // //      var MapBoxClient = require('mapbox'); 
+    // // var client = new MapboxClient('pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg');
+    //     var request_string = ''; 
+    //     //create string for request 
+    //     for (var i=0; i<coordinates_array.length; i++) {
+    //         request_string += coordinates_array[i][0] + ',' + coordinates_array[i][1]; 
 
-            if(i != coordinates_array.length-1) {
-                request_string += ';'; 
-            }
-        }
-        console.log(request_string); 
+    //         if(i != coordinates_array.length-1) {
+    //             request_string += ';'; 
+    //         }
+    //     }
+    //     console.log(request_string); 
+//     var MapboxClient = require('mapbox'); 
+//    var mapboxClient = new MapboxClient('pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg');
+// mapboxClient.getDirections(
+//   [
+//     { latitude: 33.6, longitude: -95.4431 },
+//     { latitude: 33.2, longitude: -95.4431 } ],
+//   function(err, res) {
+//   // res is a document with directions
+//   console.log(res); 
+// });
 
 
     // "https://api.mapbox.com/directions/v5/mapbox/walking/-122.42,37.78;-77.03,38.91?steps=true&alternatives=true&access_token=pk.eyJ1IjoiZW1pbGllZGFubmVuYmVyZyIsImEiOiJjaXhmOTB6ZnowMDAwMnVzaDVkcnpsY2M1In0.33yDwUq670jHD8flKjzqxg"
